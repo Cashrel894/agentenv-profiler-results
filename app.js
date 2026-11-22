@@ -61,13 +61,6 @@
       snapshot = await requestJSON(manifestPath, signal);
       if (snapshot.format_version !== 1) throw new Error("不支持的静态结果格式");
       document.title = snapshot.title;
-      $("snapshot-notice").textContent = [
-        "静态实验快照", `导出于 ${snapshot.exported_at}`,
-        snapshot.source_revision ? `实验源码 ${snapshot.source_revision}` : "",
-        snapshot.description,
-        "指标为原生全流程统计；命令、主机路径及诊断正文未公开，缺测和失败状态保留。"
-      ].filter(Boolean).join(" · ");
-      $("snapshot-notice").hidden = false;
       return snapshot;
     }
     const request = new URL(path, document.baseURI);
