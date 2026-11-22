@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN" data-profiler-manifest="data/index.json">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>64 槽常驻 / 暂停恢复实验 · 2026-11-22</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">AgentEnv Profiler</div>
+  </header>
+  <main>
+    <section class="page-heading">
+      <h1>评测结果</h1>
+      <button id="refresh-button" class="secondary" type="button">刷新结果</button>
+    </section>
+    <p id="snapshot-notice" class="empty-note" hidden></p>
+    <section class="panel selection-panel" aria-label="结果选择">
+      <label class="selector-label" for="scenario-select">评测场景<select id="scenario-select" disabled><option value="">正在读取结果…</option></select></label>
+    </section>
+    <p id="app-status" class="status-message" role="status" aria-live="polite">正在加载结果列表…</p>
+    <section id="scenario-section" hidden aria-labelledby="scenario-heading">
+      <section class="panel configuration-panel" aria-labelledby="configuration-heading">
+        <h2 id="configuration-heading">实验配置</h2>
+        <p id="configuration-status" class="status-message"></p>
+        <dl id="configuration-summary" class="configuration-grid"></dl>
+        <details class="metric-details"><summary>任务与采样配置明细</summary><div id="configuration-details"></div></details>
+      </section>
+      <div class="section-heading"><h2 id="scenario-heading">总体指标</h2><span id="scenario-status" class="badge"></span></div>
+      <div id="scenario-metrics" class="metric-grid" aria-label="场景关键指标"></div>
+      <details id="scenario-details" class="panel metric-details"><summary>场景数据</summary><div id="scenario-detail-content"></div></details>
+      <section class="panel sandbox-panel global-timeline-panel" aria-labelledby="global-timeline-heading">
+        <h2 id="global-timeline-heading">全局资源时间线</h2>
+        <fieldset id="global-series-controls" class="series-controls"><legend class="sr-only">独立显示全局资源曲线</legend></fieldset>
+        <div id="global-chart-empty" class="empty-note" hidden></div>
+        <div id="global-chart-container" class="chart-container">
+          <div id="global-chart-scroll" class="chart-scroll" tabindex="0" role="region" aria-label="全局资源时间线">
+            <svg id="global-timeline-chart" class="timeline-chart global-chart" viewBox="0 0 1060 320" role="img" aria-labelledby="global-chart-title"></svg>
+          </div>
+          <div id="global-chart-tooltip" class="chart-tooltip" role="tooltip" hidden></div>
+        </div>
+        <div id="global-sample-navigation" class="sample-navigation" hidden><label for="global-sample-cursor">采样时间</label><input id="global-sample-cursor" type="range" min="0" max="1000" step="1" value="0"><output id="global-sample-readout" for="global-sample-cursor"></output></div>
+      </section>
+      <section class="panel sandbox-panel" aria-labelledby="sandbox-heading">
+        <div class="sandbox-heading"><h2 id="sandbox-heading">沙箱轨迹</h2><label class="selector-label" for="sandbox-select">任务 / 并发槽<select id="sandbox-select" disabled><option value="">暂无资源采样轨迹</option></select></label></div>
+        <p class="empty-note">仅可选择有 RSS / CPU / IO 采样记录的沙箱或槽；调用与生命周期记录本身不代表资源已采样。</p>
+        <p id="sandbox-status" class="status-message" role="status" aria-live="polite"></p>
+        <div id="sandbox-content" hidden>
+          <div id="sandbox-metrics" class="metric-grid compact" aria-label="轨迹指标"></div>
+          <div class="chart-heading"><h3>资源峰值占比</h3></div>
+          <fieldset id="series-controls" class="series-controls"><legend class="sr-only">独立显示资源曲线</legend></fieldset>
+          <div class="chart-range-controls" role="group" aria-label="时间窗口">
+            <button id="chart-event-range" type="button" aria-pressed="true">事件时段</button>
+            <button id="chart-full-range" type="button" aria-pressed="false">全部时段</button>
+            <label for="chart-time-scale">横轴缩放<select id="chart-time-scale"><option value="1">1×</option><option value="4">4×</option><option value="8" selected>8×</option><option value="16">16×</option></select></label>
+          </div>
+          <div id="chart-empty" class="empty-note" hidden></div>
+          <div id="chart-container" class="chart-container">
+            <div id="chart-scroll" class="chart-scroll" tabindex="0" role="region" aria-label="时间线">
+              <svg id="timeline-chart" class="timeline-chart" viewBox="0 0 1060 520" role="img" aria-labelledby="chart-title"></svg>
+            </div>
+            <div id="chart-tooltip" class="chart-tooltip" role="tooltip" hidden></div>
+          </div>
+          <div id="sample-navigation" class="sample-navigation" hidden><label for="sample-cursor">采样时间</label><input id="sample-cursor" type="range" min="0" max="1000" step="1" value="0"><output id="sample-readout" for="sample-cursor"></output></div>
+          <details id="sandbox-details" class="metric-details"><summary>轨迹数据</summary><div id="sandbox-detail-content"></div></details>
+          <div class="event-heading"><h3>事件时间戳</h3></div>
+          <div class="table-scroll"><table id="event-table"><thead><tr><th scope="col">事件</th><th scope="col">轮次</th><th scope="col">沙箱 ID</th><th scope="col">开始时间（s）</th><th scope="col">结束时间（s）</th><th scope="col">耗时（s）</th><th scope="col">步骤</th><th scope="col">结果</th><th scope="col">来源 / 错误</th></tr></thead><tbody id="event-table-body"></tbody></table></div>
+        </div>
+      </section>
+    </section>
+  </main>
+  <noscript><p class="noscript">请启用 JavaScript 以读取评测结果。</p></noscript>
+</body>
+</html>
