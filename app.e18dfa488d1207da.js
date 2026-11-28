@@ -331,11 +331,9 @@
       const metrics = data.metrics || {};
       const specifications = isSlot ? [
         ["资源采样轮次", "generation_count"],
-        ["RSS 时间积分", "rss_time_mib_s"],
         ["已观测读取量", "io_observed_read_bytes"],
         ["已观测写入量", "io_observed_write_bytes"]
       ] : [
-        ["RSS 时间积分", "rss_time_mib_s"],
         ["已观测 RSS 时间积分", "observed_rss_time_mib_s"],
         ["RSS 采样数", "rss_samples"],
         ["IO 采样数", "io_samples"]
@@ -346,6 +344,7 @@
       showMetrics("sandbox-metrics", metrics, specifications);
       $("sandbox-details").querySelector("summary").textContent = isSlot ? "轨迹数据" : "沙箱数据";
       const details = {...metrics};
+      delete details.rss_time_mib_s;
       if (data.generations) details.generations = data.generations;
       if (data.warnings?.length) details.warnings = data.warnings;
       completeDetails("sandbox-detail-content", details);
